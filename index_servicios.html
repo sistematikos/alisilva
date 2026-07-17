@@ -5,25 +5,27 @@
     <title>Gestión de Servicios - Ali Silva</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; color: #333; padding: 20px; }
-        .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h2 { color: #87CEEB; }
-        input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
-        button { background-color: #87CEEB; color: white; border: none; padding: 12px; width: 100%; cursor: pointer; border-radius: 5px; font-weight: bold; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 10px; border-top: 5px solid #87CEEB; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2 { color: #87CEEB; text-align: center; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { background-color: #87CEEB; color: white; border: none; padding: 15px; width: 100%; cursor: pointer; border-radius: 5px; font-weight: bold; font-size: 16px; }
         button:hover { background-color: #76b6d1; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Nuevo Servicio</h2>
+    <h2>Registro de Servicio</h2>
     <input type="text" id="cliente" placeholder="Nombre del Cliente">
+    
     <select id="tipo">
-        <option value="Herreria Industrial">Herrería Industrial</option>
-        <option value="Montaje Estructural">Montaje Estructural</option>
-        <option value="Mantenimiento Equipos">Mantenimiento de Equipos</option>
+        <option value="Tornería">Tornería</option>
+        <option value="Fresadora">Fresadora</option>
+        <option value="Soldadura">Soldadura</option>
     </select>
-    <input type="text" id="encargado" placeholder="Nombre del Ingeniero/Encargado">
-    <button onclick="guardar()">Registrar Servicio</button>
+    
+    <input type="text" id="encargado" placeholder="Ingeniero/Encargado a cargo">
+    <button onclick="guardar()">Guardar Servicio</button>
 </div>
 
 <script type="module">
@@ -31,19 +33,29 @@
     import { collection, addDoc } from "firebase/firestore";
 
     window.guardar = async () => {
-        const data = {
-            cliente: document.getElementById('cliente').value,
-            tipo: document.getElementById('tipo').value,
-            encargado: document.getElementById('encargado').value,
-            estado: 'Pendiente',
-            fecha: new Date().toISOString()
-        };
-        
+        const cliente = document.getElementById('cliente').value;
+        const tipo = document.getElementById('tipo').value;
+        const encargado = document.getElementById('encargado').value;
+
+        if(!cliente || !encargado) {
+            alert("Por favor completa todos los campos");
+            return;
+        }
+
         try {
-            await addDoc(collection(db, "servicios"), data);
-            alert("Servicio registrado correctamente");
+            await addDoc(collection(db, "servicios"), {
+                cliente,
+                tipo,
+                encargado,
+                estado: 'Pendiente',
+                fecha: new Date().toLocaleDateString()
+            });
+            alert("Servicio de " + tipo + " registrado con éxito.");
+            // Limpiar campos
+            document.getElementById('cliente').value = '';
+            document.getElementById('encargado').value = '';
         } catch (e) {
-            alert("Error al guardar: " + e.message);
+            alert("Error: " + e.message);
         }
     };
 </script>
