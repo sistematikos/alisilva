@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Servicios - Ali Silva</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; color: #333; padding: 20px; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h2 { color: #87CEEB; }
+        input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+        button { background-color: #87CEEB; color: white; border: none; padding: 12px; width: 100%; cursor: pointer; border-radius: 5px; font-weight: bold; }
+        button:hover { background-color: #76b6d1; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Nuevo Servicio</h2>
+    <input type="text" id="cliente" placeholder="Nombre del Cliente">
+    <select id="tipo">
+        <option value="Herreria Industrial">Herrería Industrial</option>
+        <option value="Montaje Estructural">Montaje Estructural</option>
+        <option value="Mantenimiento Equipos">Mantenimiento de Equipos</option>
+    </select>
+    <input type="text" id="encargado" placeholder="Nombre del Ingeniero/Encargado">
+    <button onclick="guardar()">Registrar Servicio</button>
+</div>
+
+<script type="module">
+    import { db } from './firebase-config.js';
+    import { collection, addDoc } from "firebase/firestore";
+
+    window.guardar = async () => {
+        const data = {
+            cliente: document.getElementById('cliente').value,
+            tipo: document.getElementById('tipo').value,
+            encargado: document.getElementById('encargado').value,
+            estado: 'Pendiente',
+            fecha: new Date().toISOString()
+        };
+        
+        try {
+            await addDoc(collection(db, "servicios"), data);
+            alert("Servicio registrado correctamente");
+        } catch (e) {
+            alert("Error al guardar: " + e.message);
+        }
+    };
+</script>
+</body>
+</html>
