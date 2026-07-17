@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        :root {
+            --primary: #87CEEB; /* Azul claro */
+            --bg: #F4F7F6;      /* Gris muy claro */
+            --white: #FFFFFF;
+            --text: #333333;
+        }
+        body { font-family: sans-serif; background-color: var(--bg); margin: 0; padding: 20px; }
+        .grid-menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: auto;
+        }
+        .card {
+            background: var(--white);
+            padding: 30px;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-top: 5px solid var(--primary);
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .card:hover { transform: translateY(-5px); }
+        h1 { text-align: center; color: var(--primary); }
+    </style>
+</head>
+<body>
+
+<h1>Ali Silva - Gestión Industrial</h1>
+
+<div class="grid-menu">
+    <div class="card">Tarjetas</div>
+    <div class="card">Pedidos</div>
+    <div class="card">Facturación</div>
+    <div class="card">Encargados</div>
+    <div class="card">Inventarios</div>
+    <div class="card">Reportes</div>
+</div>
+
+</body>
+</html>
