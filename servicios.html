@@ -1,12 +1,39 @@
-<!-- Dentro de tu tag <script type="module"> en servicios.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Servicios - Ali Silva</title>
+</head>
+<body>
+
+<!-- Debes tener este elemento para que el script no falle al buscarlo -->
+<div style="background: #e1f5fe; padding: 10px; border-radius: 5px; text-align: center;">
+    <strong>Número de Control: </strong> <span id="num-display">Cargando...</span>
+</div>
+
+<input type="text" id="cliente" placeholder="Nombre del Cliente">
+<select id="tipo">
+    <option value="Tornería">Tornería</option>
+    <option value="Fresadora">Fresadora</option>
+    <option value="Soldadura">Soldadura</option>
+</select>
+<input type="text" id="encargado" placeholder="Encargado">
+<textarea id="notas" placeholder="Notas"></textarea>
+<button onclick="guardar()">Guardar Servicio</button>
+
 <script type="module">
     import { obtenerSiguienteNumero, guardarServicio } from './java_servicios.js';
 
-    // Cargar número al iniciar
     async function inicializar() {
-        const num = await obtenerSiguienteNumero();
-        document.getElementById('num-display').innerText = num;
+        try {
+            const num = await obtenerSiguienteNumero();
+            document.getElementById('num-display').innerText = num;
+        } catch (e) {
+            console.error("Error al cargar número:", e);
+        }
     }
+
+    // Ejecutar al cargar la página
     inicializar();
 
     window.guardar = async () => {
@@ -20,10 +47,13 @@
 
         const exito = await guardarServicio(data);
         if (exito) {
-            alert("Servicio #" + data.numeroControl + " guardado con éxito.");
-            inicializar(); // Actualiza el número para el próximo
+            alert("Servicio #" + data.numeroControl + " guardado.");
+            inicializar(); 
             document.getElementById('cliente').value = '';
             document.getElementById('notas').value = '';
         }
     };
 </script>
+
+</body>
+</html>
