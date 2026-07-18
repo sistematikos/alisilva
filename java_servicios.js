@@ -17,7 +17,7 @@ export async function obtenerSiguienteNumero() {
     }
 }
 
-// Función para guardar
+// Función para guardar servicio
 export async function guardarServicio(data) {
     try {
         await addDoc(collection(db, "servicios"), {
