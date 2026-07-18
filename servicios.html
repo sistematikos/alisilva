@@ -1,69 +1,29 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Gestión de Servicios - Ali Silva</title>
-    <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; padding: 20px; }
-        .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 10px; border-top: 5px solid #87CEEB; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h2 { color: #87CEEB; text-align: center; }
-        input, select, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        button { background-color: #87CEEB; color: white; border: none; padding: 15px; width: 100%; cursor: pointer; border-radius: 5px; font-weight: bold; }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <h2>Nuevo Servicio</h2>
-    <input type="text" id="cliente" placeholder="Nombre del Cliente">
-    <select id="tipo">
-        <option value="Tornería">Tornería</option>
-        <option value="Fresadora">Fresadora</option>
-        <option value="Soldadura">Soldadura</option>
-    </select>
-    <input type="text" id="encargado" placeholder="Encargado">
-    <textarea id="notas" placeholder="Notas adicionales o detalles del servicio"></textarea>
-    <button onclick="guardar()">Guardar Servicio</button>
-</div>
-
+<!-- Dentro de tu tag <script type="module"> en servicios.html -->
 <script type="module">
-    import { db } from './firebase-config.js';
-    import { collection, addDoc, getDocs, query, orderBy, limit } from "firebase/firestore";
+    import { obtenerSiguienteNumero, guardarServicio } from './java_servicios.js';
+
+    // Cargar número al iniciar
+    async function inicializar() {
+        const num = await obtenerSiguienteNumero();
+        document.getElementById('num-display').innerText = num;
+    }
+    inicializar();
 
     window.guardar = async () => {
-        const cliente = document.getElementById('cliente').value;
-        const tipo = document.getElementById('tipo').value;
-        const encargado = document.getElementById('encargado').value;
-        const notas = document.getElementById('notas').value;
+        const data = {
+            numeroControl: parseInt(document.getElementById('num-display').innerText),
+            cliente: document.getElementById('cliente').value,
+            tipo: document.getElementById('tipo').value,
+            encargado: document.getElementById('encargado').value,
+            notas: document.getElementById('notas').value
+        };
 
-        // Lógica de numeración: Buscar último registro para incrementar
-        const q = query(collection(db, "servicios"), orderBy("numeroControl", "desc"), limit(1));
-        const querySnapshot = await getDocs(q);
-        let ultimoNumero = 0;
-        querySnapshot.forEach((doc) => {
-            ultimoNumero = doc.data().numeroControl || 0;
-        });
-
-        const nuevoNumero = ultimoNumero + 1;
-
-        try {
-            await addDoc(collection(db, "servicios"), {
-                numeroControl: nuevoNumero,
-                cliente,
-                tipo,
-                encargado,
-                notas,
-                estado: 'Pendiente',
-                fecha: new Date().toLocaleDateString()
-            });
-            alert("Servicio registrado con éxito. Número de control: " + nuevoNumero);
-            // Limpiar campos
+        const exito = await guardarServicio(data);
+        if (exito) {
+            alert("Servicio #" + data.numeroControl + " guardado con éxito.");
+            inicializar(); // Actualiza el número para el próximo
             document.getElementById('cliente').value = '';
             document.getElementById('notas').value = '';
-        } catch (e) {
-            alert("Error: " + e.message);
         }
     };
 </script>
-</body>
-</html>
