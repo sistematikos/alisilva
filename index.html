@@ -2,51 +2,71 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Ali Silva - Gestión Industrial</title>
+    <title>Ali Silva | Sistema de Gestión Industrial</title>
     <style>
         :root {
-            --primary: #87CEEB; /* Azul claro */
-            --bg: #F4F7F6;      /* Gris muy claro */
+            --primary: #007BFF; /* Azul profesional */
+            --dark: #2C3E50;    /* Gris oscuro elegante */
+            --bg: #F8F9FA;      /* Fondo muy claro */
             --white: #FFFFFF;
-            --text: #333333;
         }
-        body { font-family: sans-serif; background-color: var(--bg); margin: 0; padding: 20px; }
-        .grid-menu {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            max-width: 1000px;
-            margin: auto;
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); margin: 0; }
+        
+        /* Encabezado Profesional */
+        header { background: var(--dark); color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Grid de App */
+        .dashboard { padding: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; max-width: 1200px; margin: auto; }
+        
+        /* Tarjetas estilo App */
+        .card { 
+            background: var(--white); padding: 30px; border-radius: 12px; 
+            text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: 0.3s; cursor: pointer; border-bottom: 4px solid var(--primary);
+            text-decoration: none; color: var(--dark); display: block;
         }
-        .card {
-            background: var(--white);
-            padding: 30px;
-            text-align: center;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border-top: 5px solid var(--primary);
-            transition: transform 0.2s;
-            cursor: pointer;
-            color: var(--text);
-            text-decoration: none;
-            display: block;
-        }
-        .card:hover { transform: translateY(-5px); }
-        h1 { text-align: center; color: var(--primary); }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .card h3 { margin-top: 0; color: var(--primary); font-size: 1.4rem; }
+        .card p { color: #666; font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
-<h1>Ali Silva - Gestión Industrial</h1>
+<header>
+    <h1>Ali Silva <span style="font-weight: 300;">| Industrial Management</span></h1>
+    <div id="date" style="font-size: 0.9rem; opacity: 0.8;"></div>
+</header>
 
-<div class="grid-menu">
-    <a href="tarjetas.html" class="card">Tarjetas</a>
-    <a href="servicios.html" class="card">Servicios</a>
-    <a href="facturacion.html" class="card">Facturación</a>
-    <a href="encargados.html" class="card">Encargados</a>
-    <a href="inventarios.html" class="card">Inventarios</a>
-    <a href="reportes.html" class="card">Reportes</a>
+<div class="dashboard">
+    <a href="servicios.html" class="card">
+        <h3>Servicios</h3>
+        <p>Control de tornería, fresadora y soldadura.</p>
+    </a>
+    <a href="facturacion.html" class="card">
+        <h3>Facturación</h3>
+        <p>Gestión de pagos y estados de cuenta.</p>
+    </a>
+    <a href="inventarios.html" class="card">
+        <h3>Inventarios</h3>
+        <p>Stock de materiales y consumibles.</p>
+    </a>
+    <a href="encargados.html" class="card">
+        <h3>Encargados</h3>
+        <p>Gestión de ingenieros y personal técnico.</p>
+    </a>
+    <a href="reportes.html" class="card">
+        <h3>Reportes</h3>
+        <p>Estadísticas y productividad mensual.</p>
+    </a>
+    <a href="tarjetas.html" class="card">
+        <h3>Tarjetas</h3>
+        <p>Gestión de accesos y clientes frecuentes.</p>
+    </a>
 </div>
+
+<script>
+    document.getElementById('date').innerText = new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+</script>
 
 </body>
 </html>
