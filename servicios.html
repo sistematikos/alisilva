@@ -3,37 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>Servicios - Ali Silva</title>
+    <style>
+        /* Aquí estaban faltando los estilos */
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; padding: 20px; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 10px; border-top: 5px solid #87CEEB; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2 { color: #87CEEB; text-align: center; }
+        .info-box { background: #e1f5fe; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center; }
+        input, select, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { background-color: #87CEEB; color: white; border: none; padding: 15px; width: 100%; cursor: pointer; border-radius: 5px; font-weight: bold; }
+        button:hover { background-color: #76b6d1; }
+    </style>
 </head>
 <body>
 
-<!-- Debes tener este elemento para que el script no falle al buscarlo -->
-<div style="background: #e1f5fe; padding: 10px; border-radius: 5px; text-align: center;">
-    <strong>Número de Control: </strong> <span id="num-display">Cargando...</span>
-</div>
+<div class="container">
+    <h2>Nuevo Servicio</h2>
+    
+    <div class="info-box">
+        <strong>Número de Control: </strong> <span id="num-display">Cargando...</span>
+    </div>
 
-<input type="text" id="cliente" placeholder="Nombre del Cliente">
-<select id="tipo">
-    <option value="Tornería">Tornería</option>
-    <option value="Fresadora">Fresadora</option>
-    <option value="Soldadura">Soldadura</option>
-</select>
-<input type="text" id="encargado" placeholder="Encargado">
-<textarea id="notas" placeholder="Notas"></textarea>
-<button onclick="guardar()">Guardar Servicio</button>
+    <input type="text" id="cliente" placeholder="Nombre del Cliente">
+    <select id="tipo">
+        <option value="Tornería">Tornería</option>
+        <option value="Fresadora">Fresadora</option>
+        <option value="Soldadura">Soldadura</option>
+    </select>
+    <input type="text" id="encargado" placeholder="Encargado">
+    <textarea id="notas" placeholder="Notas" rows="3"></textarea>
+    <button onclick="guardar()">Guardar Servicio</button>
+</div>
 
 <script type="module">
     import { obtenerSiguienteNumero, guardarServicio } from './java_servicios.js';
 
     async function inicializar() {
-        try {
-            const num = await obtenerSiguienteNumero();
-            document.getElementById('num-display').innerText = num;
-        } catch (e) {
-            console.error("Error al cargar número:", e);
-        }
+        const num = await obtenerSiguienteNumero();
+        document.getElementById('num-display').innerText = num;
     }
-
-    // Ejecutar al cargar la página
     inicializar();
 
     window.guardar = async () => {
@@ -47,7 +54,7 @@
 
         const exito = await guardarServicio(data);
         if (exito) {
-            alert("Servicio #" + data.numeroControl + " guardado.");
+            alert("Servicio #" + data.numeroControl + " guardado con éxito.");
             inicializar(); 
             document.getElementById('cliente').value = '';
             document.getElementById('notas').value = '';
